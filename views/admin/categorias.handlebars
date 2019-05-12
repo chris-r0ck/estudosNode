@@ -1,14 +1,18 @@
 
+
 <h1>Lista de Categorias: </h1>
 <hr>
-<a href="/admin/addCategorias"><button type="submit" class="btn btn-success">Nova Categoria</button></a>
+<a href="/admin/addCategoria"><button type="submit" class="btn btn-success">Nova Categoria</button></a>
 <hr>
 {{#each cats}}
     <div class="card mt-4">
         <div class="card-body">
             <h4>{{nome}}</h4>
-            <small>{{slug}}</small>
+            <small>{{slug}}</small><br>
+            <a href="/admin/editCategoria/{{_id}}"><button class="btn btn-warning mt-4">Editar Categoria</button></a>
+            <button class="btn btn-danger mt-4" onclick="delCategoria('{{nome}}','{{_id}}')">Deletar Categoria</button>
         </div>
     </div>
 {{/each}}
 
+<script src="/js/delCategoria.js"></script>

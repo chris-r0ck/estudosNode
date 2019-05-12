@@ -20,13 +20,52 @@ router.get('/categorias', (req, res) => {
         req.flash('error_msg', 'Houve um erro ao listar as categorias')
         res.redirect('/admin')
     })
-    
-    
 })
 
-router.get('/addCategorias', (req, res) => {
+router.get('/editCategoria/:id', (req, res) => {
+    Categoria.findOne({_id:req.params.id})
+    .then((categoria) => {
+        res.render('admin/editCategoria', {categoria: categoria})
+    })
+    .catch((err) => {
+        req.flash('error_msg', 'Houve um erro ao atualizar a Categoria')
+        res.render('/admin')
+    })
+})
+
+//EU QUE FIZ SOZINHO
+//Deleta a categoria pegando o id passado por parametro na url
+router.get('/categoria/del/:id', (req,res) => {
+    Categoria.deleteOne({_id: req.params.id}).then(() => {
+        req.flash('success_msg',"Categoria excluida com sucesso")
+        res.redirect('/admin/categorias')
+    }).catch((err) => {
+        req.flash('error_msg', "Houve um erro ao excluir a Categoria")
+        res.redirect('/admin')
+    })
+})
+
+
+
+router.post('/categoria/edit', (req, res) => {
+    Categoria.findOne({_id: req.body.id}).then((categoria) => {
+            categoria.nome = req.body.nome
+            categoria.slug = req.body.slug
+
+            categoria.save().then(() => {
+                req.flash('success_msg', 'Categoria atualizada com Sucesso !')
+                res.redirect('/admin/categorias')
+            }).catch((err) => {
+                req.flash('error_msg', 'Houve um erro ao atualizar')
+                res.redirect('/admin/categorias')
+            })
+    })
+})
+
+router.get('/addCategoria', (req, res) => {
     res.render('admin/addCategorias')
 })
+
 
 router.post('/categoria/add', (req, res) => {
 //validação de formulário
@@ -58,6 +97,7 @@ router.post('/categoria/add', (req, res) => {
             })
     }
 })
+
 
 
 module.exports = router
