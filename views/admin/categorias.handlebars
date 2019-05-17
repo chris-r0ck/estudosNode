@@ -13,6 +13,8 @@
             <button class="btn btn-danger mt-4" onclick="delCategoria('{{nome}}','{{_id}}')">Deletar Categoria</button>
         </div>
     </div>
+{{else}}
+<h4 class="mt-4">Nenhuma Categoria Cadastrada !</h4>
 {{/each}}
 
 <script src="/js/delCategoria.js"></script>

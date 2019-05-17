@@ -18,4 +18,6 @@ Categoria = new Schema({
     }
 })
 
+//cria o model, pega uma middleware function mongoose.model(), o primeiro
+//parametro é o nome do model, e o segundo é o objeto Categoria da classe Schema
 mongoose.model('categoria', Categoria)

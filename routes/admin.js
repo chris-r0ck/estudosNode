@@ -1,16 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose') //importa o mongoose
+
+require("../models/Postagem") //Chama o Model
+const Postagem = mongoose.model('postagem') 
+
 require("../models/Categoria") // chama o arquivo do model
 const Categoria = mongoose.model('categoria') //chama o metodo que está no arquivo de model
 
 
+
 router.get('/', (req, res) => {
     res.render('admin/index')
-})
-
-router.get('/posts', (req, res) =>{
-    res.send('pagina de posts')
 })
 
 router.get('/categorias', (req, res) => {
@@ -65,6 +66,42 @@ router.post('/categoria/edit', (req, res) => {
 router.get('/addCategoria', (req, res) => {
     res.render('admin/addCategorias')
 })
+
+
+router.get('/posts', (req, res) => {
+    
+    res.render('admin/posts')
+})
+
+router.get('/addPostagem', (req,res) => {
+    Categoria.find().then((categorias) => {
+        res.render('admin/addPostagem', {categorias: categorias})
+    }).catch((err) => {
+        req.flash('error_msg', 'houve um erro ao carregar o Formulário')
+        res.redirect('/admin')
+    })
+
+    
+})
+
+router.post('/postagem/add', (req,res) => {
+    var novaPostagem = {
+        titulo: req.body.titulo,
+        conteudo: req.body.texto,
+        categoria: req.body.categoria,
+        slug: req.body.slug,
+        descricao: req.body.desc
+    }
+
+    new Postagem(novaPostagem).save().then(() => {
+        req.flash('success_msg', 'Postagem Salva com sucesso')
+        res.redirect('/admin/addPostagem')
+    }).catch((err) => {
+        req.flash('error_msg', 'Erro ao salvar a postagem')
+        res.redirect('/admin')
+    })
+})
+
 
 
 router.post('/categoria/add', (req, res) => {
