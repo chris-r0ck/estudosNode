@@ -7,6 +7,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const app = express();
 const path = require('path')
+const Postagens = mongoose.model('postagem')
 
 //Configurações
     //Sessões
@@ -42,6 +43,31 @@ const path = require('path')
     
 //Rotas
     app.use('/admin', admin) //cria um prefixo de rotas, nesse caso, /admin chama as rotas do admin
+    
+    app.get('/', (req, res) => {
+      Postagens.find().populate('categorias').sort({data: "desc"}).then((postagens) => {
+        res.render('index', {postagens: postagens})
+      })
+      
+    })
+
+    app.get('/postagem/:slug', (req, res) => {
+      Postagens.findOne({slug: req.params.slug}).then((postagem) => {
+        if(postagem){
+          res.render('postagem/index', {postagem: postagem})
+        } else {
+          req.flash('error_msg', 'Erro Interno #23')
+          res.redirect('/')
+        }
+      }).catch((err) => {
+        req.flash('error_msg', 'Erro Interno #24')
+          res.redirect('/')
+      })
+    })
+
+
+      
+      
 
 //outros
 app.listen(80, () => {

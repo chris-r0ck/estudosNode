@@ -1,0 +1,30 @@
+<h2>Editar Postagem</h2>
+<hr>
+
+<div class="card">
+    <div class="card-body">
+        <form action="/admin/postagem/edit" method="post">
+            <label for="titulo">Titulo:</label>
+            <input type="text" name="titulo" required class="form-control" placeholder="{{postagem.titulo}}" value="{{titulo}}">
+            <label for="desc" class="mt-2">Descrição</label>
+            <input type="text" name="desc" class="form-control" placeholder="{{postagem.descricao}}" value="{{postagem.descricao}}">
+            <label for="slug" class="mt-2">Slug</label>
+            <input type="text" name="slug" class="form-control" placeholder="{{postagem.slug}}" value="{{postagem.slug}}">
+            <br>
+            <label for="categoria">Categoria:</label>
+            <select name="categoria" class="form-control">
+            {{#each categorias}}
+                <option value="{{_id}}">{{nome}}</option>
+                {{else}}
+                <option value="">Nenhuma Categoria Cadastrada</option>
+            {{/each}}
+            
+            
+            <br><label for="texto" class="mt-2">Texto:</label>
+            <textarea name="texto" class="form-control" cols="30" rows="10" placeholder="{{postagem.conteudo}}" value="{{postagem.conteudo}}"></textarea>
+            <input type="hidden" name="id" value="{{postagem._id}}">
+            <button class="btn btn-success mt-4" type="submit">Editar Postagem</button>
+         
+        </form>
+    </div>
+</div>

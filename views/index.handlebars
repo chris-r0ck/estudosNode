@@ -1,0 +1,20 @@
+<div class="jumbotron">
+  <h1 class="display-4">Blog do node</h1>
+  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+  <hr class="my-4">
+  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+  <a class="btn btn-primary btn-lg" href="#" role="button">Acessar Painel</a>
+</div>
+<h3>Postagens Recentes: </h3>
+<div class="card">
+    <div class="card-body">
+        {{#each postagens}}
+        <h4>{{titulo}}</h4>
+        <p>{{descricao}}</p>
+        <hr>
+        <a href="/postagem/{{slug}}"><button class="bt btn-success">Leia Mais...</button></a>
+        {{else}}
+        <h5>Não há postagens</h5>
+        {{/each}}
+    </div>
+</div>

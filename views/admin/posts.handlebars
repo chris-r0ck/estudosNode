@@ -3,3 +3,21 @@
 <hr>
 <a href="/admin/addPostagem"><button type="submit" class="btn btn-success">Nova Postagem</button></a>
 <hr>
+{{#each postagens}}
+<div class="card mt-4 col-md">
+    <div class="card-body">
+            <h4>{{titulo}}</h4>
+            <p>{{descricao}}</p>
+            <small>Categoria: {{categoria.nome}}</small><br>
+            <i><small>Criado em: {{data}}</small></i><br>
+    <hr>
+    <nav>
+    <a href="/admin/editPostagem/{{_id}}"><button type="submit" class="btn btn-warning"><span style="font-size: 15px">Editar Postagem</span></button></a>
+    <a href="/admin/postagem/delete/{{_id}}"><button type="submit" class="btn btn-danger"><span style="font-size: 15px">Deletar Postagem</span></button></a>
+    </nav>
+    </div>
+</div>
+
+{{else}}
+<h3>Não há Postagens</h3>
+{{/each}}

@@ -67,10 +67,15 @@ router.get('/addCategoria', (req, res) => {
     res.render('admin/addCategorias')
 })
 
-
+//O Populate usa o nome do CAMPO A PESQUISAR
 router.get('/posts', (req, res) => {
+    Postagem.find().populate("categoria").sort({data: "desc"}).then((postagens) => {
+        res.render('admin/posts', {postagens: postagens})
+    }).catch((err) => {
+        req.flash("error_msg", "Houve um erro ao carregar postagens")
+        res.redirect('/admin')
+    })
     
-    res.render('admin/posts')
 })
 
 router.get('/addPostagem', (req,res) => {
@@ -80,9 +85,52 @@ router.get('/addPostagem', (req,res) => {
         req.flash('error_msg', 'houve um erro ao carregar o Formulário')
         res.redirect('/admin')
     })
-
-    
 })
+
+router.get('/editPostagem/:id', (req, res) => {
+    Postagem.findOne({_id: req.params.id}).then((postagem) => {
+        Categoria.find().then((categorias) => {
+            res.render('admin/editPostagem', {postagem: postagem, categorias: categorias})
+        }).catch((err) => {
+            req.flash("error_msg", "Erro ao carregar categorias")
+            res.redirect('/admin/posts')
+        })
+    })
+})
+
+router.post('/postagem/edit', (req, res) => {
+    Postagem.findOne({_id: req.body.id}).then((postagem) => {
+        postagem.titulo = req.body.titulo,
+        postagem.descricao = req.body.desc,
+        postagem.slug = req.body.slug,
+        postagem.categoria = req.body.categoria,
+        postagem.texto = req.body.texto
+
+        postagem.save().then(() =>{
+            req.flash("success_msg", "Postagem Atualizada com Sucesso")
+            res.redirect('/admin/posts')
+            console.log(postagem)
+        }).catch((err) => {
+            req.flash('error_msg', "Houve um erro ao Atualizar a Postagem")
+            res.redirect('/admin/posts')
+        })
+    }).catch((err) => {
+        req.flash('error_msg', 'Erro ao Atualizar o post')
+        res.redirect('/admin/posts')
+
+    })
+})        
+
+router.get('/postagem/delete/:id', (req, res) => {
+    Postagem.deleteOne({_id: req.params.id}).then(() => {
+        req.flash('success_msg', "Postagem Deletada com sucesso")
+        res.redirect('/admin/posts')
+    }).catch((err) => {
+        req.flash('error_msg', 'Erro Interno')
+        res.redirect('/admin')
+    })
+})
+
 
 router.post('/postagem/add', (req,res) => {
     var novaPostagem = {
