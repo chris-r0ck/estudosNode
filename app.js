@@ -3,6 +3,7 @@ const handlebars = require('express-handlebars');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const admin = require('./routes/admin')
+const usuarios = require('./routes/usuarios')
 const session = require('express-session');
 const flash = require('connect-flash');
 const app = express();
@@ -65,7 +66,7 @@ const Postagens = mongoose.model('postagem')
       })
     })
 
-
+app.use('/usuarios', usuarios)
       
       
 

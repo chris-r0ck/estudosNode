@@ -184,5 +184,4 @@ router.post('/categoria/add', (req, res) => {
 })
 
 
-
 module.exports = router
